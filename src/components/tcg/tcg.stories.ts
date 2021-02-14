@@ -4,7 +4,7 @@ import {
   getBaseCharizard,
   pokemon,
   getPokemons,
-  getPokemon,
+  // getPokemon,
   getRdmBase,
 } from "../../utils/api";
 import { createCard } from "./tcg";
@@ -48,16 +48,15 @@ export const pkmsFromAPIFilter = (
   const input = createElement("input", {
     onchange: async () => {
       const newPkms = await getPokemons(input.value);
-      // console.log({ newPkms });
-      // * attention *//
-      const newCards = newPkms.map((pokemonTCG) => createCard(pokemonTCG));
+      console.log(newPkms);
+      const newCards = newPkms.map((pokemon) => createCard(pokemon));
       pkmContainer.innerHTML = "";
       pkmContainer.append(...newCards);
     },
   });
   const pkmContainer = createElement("div", {
     className: "container",
-    childs: pokemons.map((pokemonTCG) => createCard(pokemonTCG)),
+    childs: pokemons.map((pokemon) => createCard(pokemon)),
   });
   const container = createElement("div", {
     className: "",
@@ -68,6 +67,7 @@ export const pkmsFromAPIFilter = (
 
 pkmsFromAPIFilter.loaders = [
   async () => ({
+    // pokemonTCG: await getPokemon(),
     pokemons: await getPokemons(),
   }),
 ];
