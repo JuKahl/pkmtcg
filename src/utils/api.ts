@@ -173,7 +173,7 @@ export async function getPokemons(name?: string) {
   const result = (await response.json()) as APIPKMS;
   console.log(result);
   const pokemons = result.data.map((pkmChar) => {
-    convertToPkm(pkmChar);
+    return convertToPkm(pkmChar);
   });
   console.log(pokemons);
 
@@ -190,7 +190,7 @@ export async function getRdmBase(id: number) {
     }
   );
   const result = (await response.json()) as APIPKM;
-  const rdmPkm = convertToPkm(result);
+  const rdmPkm = convertToPkm(result.data);
 
   return rdmPkm;
 }
