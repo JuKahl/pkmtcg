@@ -125,13 +125,13 @@ export type pokemon = {
 function convertToPkm(pkmChar: APIPKM): pokemon {
   return {
     data: {
-      name: pkmChar.data.name,
-      hp: pkmChar.data.hp,
-      types: pkmChar.data.types,
-      evolvesFrom: pkmChar.data.evolvesFrom,
+      name: pkmChar.name,
+      hp: pkmChar.hp,
+      types: pkmChar.types,
+      evolvesFrom: pkmChar.evolvesFrom,
       images: {
-        large: pkmChar.data.images.large,
-        small: pkmChar.data.images.small,
+        large: pkmChar.images.large,
+        small: pkmChar.images.small,
       },
     },
   };
@@ -144,18 +144,53 @@ export async function getBaseCharizard() {
     },
   });
   const result = (await response.json()) as APIPKM;
-  const charizard = convertToPkm(result);
+  const charizard = convertToPkm(result.data);
 
   return charizard;
 }
 
-export async function getTCG() {
-  const response = await fetch("https://api.pokemontcg.io/v2/cards", {
+export async function getPokemon(id?: string) {
+  const response = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
     headers: {
       "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
     },
   });
+  const result = (await response.json()) as APIPKM;
+  const pokemonTCG = convertToPkm(result);
+
+  return pokemonTCG;
+}
+
+export async function getPokemons(name?: string) {
+  const response = await fetch(
+    `https://api.pokemontcg.io/v2/cards?${name ? `?q=name:${name}` : ""}`,
+    {
+      headers: {
+        "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
+      },
+    }
+  );
   const result = (await response.json()) as APIPKMS;
-  const pokemons = result.data.map((pkmChar) => convertToPkm(pkmChar));
+  console.log(result);
+  const pokemons = result.data.map((pkmChar) => {
+    convertToPkm(pkmChar);
+  });
+  console.log(pokemons);
+
   return pokemons;
+}
+
+export async function getRdmBase(id: number) {
+  const response = await fetch(
+    `https://api.pokemontcg.io/v2/cards/base1-${id}`,
+    {
+      headers: {
+        "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
+      },
+    }
+  );
+  const result = (await response.json()) as APIPKM;
+  const rdmPkm = convertToPkm(result);
+
+  return rdmPkm;
 }
