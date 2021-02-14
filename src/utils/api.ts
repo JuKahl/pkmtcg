@@ -149,21 +149,21 @@ export async function getBaseCharizard() {
   return charizard;
 }
 
-export async function getPokemon(id?: string) {
-  const response = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
-    headers: {
-      "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
-    },
-  });
-  const result = (await response.json()) as APIPKM;
-  const pokemonTCG = convertToPkm(result);
+// export async function getPokemon(id?: string) {
+//   const response = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
+//     headers: {
+//       "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
+//     },
+//   });
+//   const result = (await response.json()) as APIPKM;
+//   const pokemonTCG = convertToPkm(result.data);
 
-  return pokemonTCG;
-}
+//   return pokemonTCG;
+// }
 
-export async function getPokemons(name?: string) {
+export async function getPokemons(name: string) {
   const response = await fetch(
-    `https://api.pokemontcg.io/v2/cards?${name ? `?q=name:${name}` : ""}`,
+    `https://api.pokemontcg.io/v2/cards?q=name:${name}`,
     {
       headers: {
         "X-Auth-Token": "238e88e0-bf8b-4de6-b9c4-7f443d55fc45",
@@ -175,8 +175,6 @@ export async function getPokemons(name?: string) {
   const pokemons = result.data.map((pkmChar) => {
     return convertToPkm(pkmChar);
   });
-  console.log(pokemons);
-
   return pokemons;
 }
 
