@@ -2,7 +2,7 @@ import "./tcg.css";
 import { createElement } from "../../utils/createElement";
 import {
   getBaseCharizard,
-  pokemon,
+  Pokemon,
   getPokemons,
   // getPokemon,
   getRdmBase,
@@ -18,7 +18,7 @@ export default {
 
 type pkmCharizard = {
   loaded: {
-    charizard: pokemon;
+    charizard: Pokemon;
   };
 };
 export const getBaseCharizardAPI = (
@@ -36,15 +36,7 @@ getBaseCharizardAPI.loaders = [
 
 //* multiple pokemon *//
 
-type pkmsFromAPIFilterProps = {
-  loaded: {
-    pokemons: pokemon[];
-  };
-};
-export const pkmsFromAPIFilter = (
-  args,
-  { loaded: { pokemons } }: pkmsFromAPIFilterProps
-) => {
+export const pkmsFromAPIFilter = () => {
   const input = createElement("input", {
     onchange: async () => {
       const newPkms = await getPokemons(input.value);
@@ -56,7 +48,7 @@ export const pkmsFromAPIFilter = (
   });
   const pkmContainer = createElement("div", {
     className: "container",
-    childs: pokemons.map((pokemon) => createCard(pokemon)),
+    childs: [],
   });
   const container = createElement("div", {
     className: "",
@@ -64,13 +56,6 @@ export const pkmsFromAPIFilter = (
   });
   return container;
 };
-
-pkmsFromAPIFilter.loaders = [
-  async () => ({
-    // pokemonTCG: await getPokemon(),
-    pokemons: await getPokemons(),
-  }),
-];
 
 //* random base set pkm *//
 

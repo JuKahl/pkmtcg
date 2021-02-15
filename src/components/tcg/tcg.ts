@@ -1,9 +1,7 @@
 import { createElement } from "../../utils/createElement";
-import { pokemon } from "../../utils/api";
+import { Pokemon } from "../../utils/api";
 
-export function createCard({
-  data: { name, hp, types, evolvesFrom, images },
-}: pokemon) {
+export function createCard({ name, hp, types, evolvesFrom, images }: Pokemon) {
   return createElement("div", {
     className: "card",
     childs: [
